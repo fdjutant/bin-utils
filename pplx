@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# check if the API key exists
+if [[ -z "$PPLX_API_KEY" ]]; then
+	echo "$0: PPLX_API_KEY is not set." 1>&2
+	exit 1
+fi
+
+# allow option for searching or not
+DISABLE_SEARCH=false
+while [[ "$1" == -* ]]; do
+	case "$1" in
+		-n | --no-search)	DISABLE_SEARCH=true
+					shift
+					;;
+		*)			echo "$0: Unknown option $1" 1>&2
+					exit 22
+					;;
+	esac
+done
+
+# check the input - either file or text
+if [[ -f $1 ]]; then
+	if ! [ -z $1 ]; then
+		QUERY=$(cat $1)
+	else
+		echo "$0: The file is empty" 1>&2
+		exit 23
+	fi
+elif [[ -z $1 ]]; then # check if a prompt is added
+	echo "$0: No prompt provided" 1>&2
+	exit 2
+else
+	QUERY="$1"
+fi
+tmpfile="/tmp/tmp.$(date +%Y-%m-%d_%H:%M:%S:%NS)_$(echo $$)"
+
+curl -s https://api.perplexity.ai/chat/completions \
+  -H "Authorization: Bearer $PPLX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg q "$QUERY" --argjson ds "$DISABLE_SEARCH"\
+  	'{model: "sonar", messages: [{role: "user", content: $q}],
+	disable_search:$ds}')"\
+  	| jq -r '.choices[0].message.content' | tee ${tmpfile}
