@@ -1,5 +1,28 @@
 #!/bin/bash
 
+# usage
+usage() {
+cat << EOF
+Usage: $(basename "$0") [OPTIONS] '<prompt-or-file>'
+
+Description:
+  Send a prompt to the Perplexity API and print the response.
+
+Options:
+  -h, --help	Show this help message and exit
+  -n		Do not perform web search
+
+Example:
+  $(basename $0) -n 'What is an exit code in shell?'
+  $(basename $0) 'What is the status of the London Underground today?'
+EOF
+}
+if [ $# -lt 1 ]; then
+	usage
+	exit 16
+fi
+
+
 # check if the API key exists
 if [[ -z "$PPLX_API_KEY" ]]; then
 	echo "$0: PPLX_API_KEY is not set." 1>&2
@@ -10,6 +33,9 @@ fi
 DISABLE_SEARCH=false
 while [[ "$1" == -* ]]; do
 	case "$1" in
+		-h | --help)	usage
+				exit 17
+				;;
 		-n | --no-search)	DISABLE_SEARCH=true
 					shift
 					;;
