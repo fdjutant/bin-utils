@@ -1,0 +1,32 @@
+#!/bin/bash
+
+usage() {
+cat << EOF
+Usage: $(basename "$0") <file-to-edit>
+
+Description:
+ Create a backup file with username and timestamp
+EOF
+}
+
+if [ $# -lt 1 ]; then
+	usage
+	exit 1
+fi
+
+if ! [ -z "$1" ] && [ -f "$1" ]; then
+	filename=$(basename "$1")
+	pathname=$(dirname "$1")
+	bkfilename="${pathname}/${filename}.bk.$(whoami)-$(date +%Y-%m-%d-%T.%N)"
+
+	rsync -a "$1" "$bkfilename"
+	if [[ $? -eq 0 ]]; then
+		echo "Backup file ${bkfilename} is created"
+	else
+		echo "$0: Cannot create the backup file" 1>&2
+		exit 2
+	fi
+else
+	echo "$0: No file is supplied" 1>&2
+	exit 3
+fi

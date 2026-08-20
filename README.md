@@ -7,6 +7,7 @@ A collection of personal shell scripts
 | Script | Description |
 |---|---|
 | [`pplx`](./pplx) | CLI wrapper for querying the Perplexity API from the shell |
+| [`mkbk`](./mkbk) | Creates a timestamped backup copy of a file before editing |
 
 ## Usage
 
