@@ -8,6 +8,7 @@ A collection of personal shell scripts
 |---|---|
 | [`pplx`](./pplx) | CLI wrapper for querying the Perplexity API from the shell |
 | [`mkbk`](./mkbk) | Creates a timestamped backup copy of a file before editing |
+| [`revelio`](./revelio) | Reveals key system information of a linux box |
 
 ## Usage
 

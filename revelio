@@ -2,8 +2,10 @@
 
 usage(){
 cat << EOF
+Usage: revelio
+
 Description:
-  Reveal the system you are in.
+  Reveals key system information of a linux box.
 EOF
 }
 
