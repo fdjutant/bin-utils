@@ -1,0 +1,52 @@
+#!/bin/bash
+
+usage(){
+cat << EOF
+Description:
+  Reveal the system you are in.
+EOF
+}
+
+if [[ $# -gt 0 ]]; then
+	usage
+	exit 1
+fi
+
+echo "=== hostnamectl ==="
+hostnamectl
+
+echo
+echo "=== uname -a ==="
+uname -a
+
+echo
+echo "=== cat /etc/os-release ==="
+cat /etc/os-release
+
+echo
+echo "=== lscpu ==="
+lscpu
+
+echo
+echo "=== free ==="
+free -h
+
+echo
+echo "=== df -h ==="
+df -h
+
+echo
+echo "=== lsblk ==="
+lsblk
+
+echo
+echo "=== ip -br addr ==="
+ip -br addr
+
+echo
+echo "=== ip route ==="
+ip route
+
+echo
+echo "=== uptime ==="
+uptime
